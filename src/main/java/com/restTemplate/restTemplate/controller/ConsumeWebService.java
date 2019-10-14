@@ -13,58 +13,58 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/restTemplate/")
 public class ConsumeWebService {
 
     @Autowired
     RestTemplate restTemplate;
 
-    @RequestMapping(value = "/template/products")
+    @GetMapping("food")
     public String getProductList() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<String> entity = new HttpEntity<String>(headers);
 
-        return restTemplate.exchange("http://localhost:8080/v1/food/findAll", HttpMethod.GET, entity, String.class).getBody();
+        return restTemplate.exchange("http://localhost:8080/v1/food", HttpMethod.GET, entity, String.class).getBody();
     }
 
-    //NOT GET YET!!
-    @RequestMapping(value = "/template/findById", method = RequestMethod.POST)
-    public Food getProductById (@RequestBody Food food) {
+    @GetMapping("food/{id}")
+    public Food getProductById (@PathVariable("id") Integer id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<Food> entity = new HttpEntity<Food>(food, headers);
+        HttpEntity<Integer> entity = new HttpEntity<Integer>(id, headers);
 
         return restTemplate.exchange(
-                "http://localhost:8080/v1/food/findById", HttpMethod.POST, entity, Food.class).getBody();
+                "http://localhost:8080/v1/food/" + id, HttpMethod.GET, entity, Food.class).getBody();
     }
 
-    @RequestMapping(value = "/template/add", method = RequestMethod.POST)
+    @PostMapping("food")
     public Food createProducts(@RequestBody Food food) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<Food> entity = new HttpEntity<Food>(food,headers);
 
         return restTemplate.exchange(
-                "http://localhost:8080/v1/food/addMenu", HttpMethod.POST, entity, Food.class).getBody();
+                "http://localhost:8080/v1/food", HttpMethod.POST, entity, Food.class).getBody();
     }
 
-    @RequestMapping(value = "/template/update", method = RequestMethod.PUT)
+    @PutMapping("food")
     public Food updateProduct(@RequestBody Food product) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         HttpEntity<Food> entity = new HttpEntity<Food>(product,headers);
 
         return restTemplate.exchange(
-                "http://localhost:8080/v1/food/updateById", HttpMethod.PUT, entity, Food.class).getBody();
+                "http://localhost:8080/v1/food", HttpMethod.PUT, entity, Food.class).getBody();
     }
 
-    @RequestMapping(value = "/template/delete", method = RequestMethod.DELETE)
-    public String deleteProduct(@RequestBody Food food) {
+    @DeleteMapping("food/{id}")
+    public String deleteProduct(@PathVariable("id") Integer id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<Integer> entity = new HttpEntity<Integer>(food.getId(), headers);
+        HttpEntity<Integer> entity = new HttpEntity<Integer>(id, headers);
 
         return restTemplate.exchange(
-                "http://localhost:8080/v1/food/deleteById", HttpMethod.DELETE, entity, String.class).getBody();
+                "http://localhost:8080/v1/food/" + id, HttpMethod.DELETE, entity, String.class).getBody();
     }
 }
