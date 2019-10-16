@@ -1,7 +1,6 @@
-package com.restTemplate.restTemplate.controller;
+package com.restTemplate.controller;
 
-import com.restTemplate.restTemplate.model.Food;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.restTemplate.model.Food;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -10,14 +9,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/restTemplate/")
 public class ConsumeWebService {
 
-    @Autowired
     RestTemplate restTemplate;
+    //Constructor injection
+    public ConsumeWebService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @GetMapping("food")
     public String getProductList() {

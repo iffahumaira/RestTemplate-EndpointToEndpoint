@@ -1,4 +1,4 @@
-package com.restTemplate.restTemplate.model;
+package com.restTemplate.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
